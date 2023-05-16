@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{9D0E7703-47EE-9F23-6D17-E484EF40519F}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "ue4gunfov",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
