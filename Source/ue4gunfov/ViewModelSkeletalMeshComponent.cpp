@@ -14,13 +14,23 @@ FMatrix UViewModelSkeletalMeshComponent::GetRenderMatrix() const
 	}
 
 	// ensure we have a player controller
-	const APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	const auto World = GetWorld();
+	if (!World)
+	{
+		return Super::GetRenderMatrix();
+	}
+	
+	const APlayerController* PlayerController = World->GetFirstPlayerController();
 	if (!PlayerController)
 	{
 		return Super::GetRenderMatrix();
 	}
 
 	// ensure we have a local player
+	if (!PlayerController->Player)
+	{
+		return Super::GetRenderMatrix();
+	}
 	const auto* LocalPlayer = Cast<ULocalPlayer>(PlayerController->Player);
 	if (!LocalPlayer)
 	{
@@ -41,7 +51,7 @@ FMatrix UViewModelSkeletalMeshComponent::GetRenderMatrix() const
 		).SetRealtimeUpdate(true)
 	);
 
-	const auto Matrices = ViewProjectionUtils::GetMatrices(*GetWorld());
+	const auto Matrices = ViewProjectionUtils::GetMatrices(*World);
 
 	const auto ViewportSize = LocalPlayer->ViewportClient->Viewport->GetSizeXY();
 	const float Width = ViewportSize.X;
@@ -84,7 +94,6 @@ FMatrix UViewModelSkeletalMeshComponent::GetRenderMatrix() const
 	}
 
 	const FTransform ComponentTransform = GetComponentTransform();
-	AddDebugMessage(GetName());
 	const FMatrix NewViewProjectionMatrix = Matrices.ViewMatrix * NewProjectionMatrix;
 	const FMatrix InverseOldViewProjectionMatrix = Matrices.InverseViewProjectionMatrix;
 	const FMatrix ModelMatrix = ComponentTransform.ToMatrixWithScale();
