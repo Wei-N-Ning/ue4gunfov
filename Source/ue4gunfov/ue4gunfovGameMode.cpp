@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ue4gunfovGameMode.h"
+
+#include "DebugHud.h"
 #include "ue4gunfovHUD.h"
 #include "ue4gunfovCharacter.h"
 #include "UObject/ConstructorHelpers.h"
@@ -13,5 +15,5 @@ Aue4gunfovGameMode::Aue4gunfovGameMode()
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
 	// use our custom HUD class
-	HUDClass = Aue4gunfovHUD::StaticClass();
+	HUDClass = ADebugHud::StaticClass();
 }

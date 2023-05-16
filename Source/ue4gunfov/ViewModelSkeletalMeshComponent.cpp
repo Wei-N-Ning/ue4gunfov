@@ -94,6 +94,8 @@ FMatrix UViewModelSkeletalMeshComponent::GetRenderMatrix() const
 	}
 
 	const FTransform ComponentTransform = GetComponentTransform();
+	AddDebugMessage(GetName());
+	AddDebugMessage(ComponentTransform.ToString());
 	const FMatrix NewViewProjectionMatrix = Matrices.ViewMatrix * NewProjectionMatrix;
 	const FMatrix InverseOldViewProjectionMatrix = Matrices.InverseViewProjectionMatrix;
 	const FMatrix ModelMatrix = ComponentTransform.ToMatrixWithScale();
@@ -112,8 +114,10 @@ void UViewModelSkeletalMeshComponent::AddDebugMessage(FString&& Message) const
 	{
 		if (const auto PlayerController = World->GetFirstPlayerController())
 		{
-			const auto hud = Cast<ADebugHud>(PlayerController->GetHUD());
-			hud->AddDebugMessage(GetTypeHash(GetName()), Message, FColor::Green, 1.25f);
+			if (const auto hud = Cast<ADebugHud>(PlayerController->GetHUD()))
+			{
+				hud->AddDebugMessage(GetTypeHash(GetName()), Message, FColor::Green, 1.25f);
+			}
 		}
 	}
 }
